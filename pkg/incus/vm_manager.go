@@ -45,6 +45,7 @@ func (vm *VMManager) ProvisionVMs(count int) error {
 func (vm *VMManager) createVM(config VMConfig) error {
 	req := api.InstancesPost{
 		Name: config.Name,
+		Type: "virtual-machine",
 		Source: api.InstanceSource{
 			Type:     "image",
 			Alias:    config.ImageAlias,
