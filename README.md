@@ -1,7 +1,7 @@
 # yak8s
 Multi node k8s cluster on your laptop.
 
-Yak8s is still under development.
+Yak8s(including this README) is still under development.
 
 Yak8s provides a multi node kubernetes cluster on you laptop, that can be used for development, testing and learning.
 
