@@ -26,7 +26,7 @@ func NewVMManager() (*VMManager, error) {
 // ProvisionVMs provisions the specified number of VMs
 func (vm *VMManager) ProvisionVMs(count int) error {
 	for i := 1; i <= count; i++ {
-		name := fmt.Sprintf("vm-%d", i)
+		name := fmt.Sprintf("vm-%d", i) // TODO Remove the hardcoded name
 		config := VMConfig{
 			Name:       name,
 			ImageAlias: "ubuntu/jammy/cloud", // Image alias for Ubuntu 22.04 server
@@ -38,6 +38,18 @@ func (vm *VMManager) ProvisionVMs(count int) error {
 		fmt.Printf("VM %s created successfully\n", name)
 	}
 
+	return nil
+}
+
+// RemoveVMs removes the VMs
+func (vm *VMManager) RemoveVMs(count int) error {
+	for i := 1; i <= count; i++ {
+		vm_name := fmt.Sprintf("vm-%d", i)
+		if err := vm.deleteVM(vm_name); err != nil {
+			return fmt.Errorf("failed to delete VM %s: %w", vm_name, err)
+		}
+		fmt.Printf("Removed VM %s\n", vm_name)
+	}
 	return nil
 }
 
@@ -78,6 +90,38 @@ func (vm *VMManager) createVM(config VMConfig) error {
 	err = op.Wait()
 	if err != nil {
 		return fmt.Errorf("error waiting for VM %s to start: %w", config.Name, err)
+	}
+
+	return nil
+}
+
+// deleteVM deletes a VM with a given name
+func (vm *VMManager) deleteVM(name string) error {
+	// Stop the VM
+	op, err := vm.client.UpdateInstanceState(name, api.InstanceStatePut{
+		Action:  "stop",
+		Timeout: -1,
+	}, "")
+	if err != nil {
+		return fmt.Errorf("error stopping VM %s: %w", name, err)
+	}
+
+	// Wait for VM stop to complete
+	err = op.Wait()
+	if err != nil {
+		return fmt.Errorf("error waiting for VM %s to stop: %w", name, err)
+	}
+
+	// Delete the VM
+	op, err = vm.client.DeleteInstance(name)
+	if err != nil {
+		return fmt.Errorf("error deleting VM %s: %w", name, err)
+	}
+
+	// Wait for VM deletion operation to complete
+	err = op.Wait()
+	if err != nil {
+		return fmt.Errorf("error waiting for VM %s deletion: %w", name, err)
 	}
 
 	return nil

@@ -20,3 +20,18 @@ func RunProvisionCommand(vmCount int) error {
 
 	return nil
 }
+
+// RunDeletionCommand deletes the VMs
+func RunDeletionCommand(vmCount int) error {
+	// Initialize the VM Manager
+	vmManager, err := incus.NewVMManager()
+	if err != nil {
+		return fmt.Errorf("error initializing VM manager: %w", err)
+	}
+
+	// Stop the VMs
+	if err := vmManager.RemoveVMs(vmCount); err != nil {
+		return fmt.Errorf("error removing VMs: %w", err)
+	}
+	return nil
+}
