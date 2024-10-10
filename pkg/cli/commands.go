@@ -35,3 +35,12 @@ func RunDeletionCommand(vmCount int) error {
 	}
 	return nil
 }
+
+// Help command
+func RunHelpCommand() {
+	fmt.Println("Usage: yak8s <command>")
+	fmt.Println("Commands:")
+	fmt.Println("  up       : Spin up VMs to deploy the cluster.")
+	fmt.Println("  down     : Gracefully stop and remove the VMs.")
+	fmt.Println("  help     : Show this help message.")
+}

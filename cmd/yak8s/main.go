@@ -34,6 +34,9 @@ func main() {
 		}
 		fmt.Printf("Successfully removed %d VMs\n", numVms)
 
+	case "help":
+		cli.RunHelpCommand()
+
 	default:
 		fmt.Printf("Unknown command: %s\n", command)
 		os.Exit(1)
