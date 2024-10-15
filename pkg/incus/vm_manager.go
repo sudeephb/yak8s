@@ -141,3 +141,12 @@ func (vm *VMManager) deleteVM(name string) error {
 
 	return nil
 }
+
+// DeleteNetwork deletes the network wiht a given name
+func (vm *VMManager) DeleteNetwork(networkName string) error {
+	err := vm.client.DeleteNetwork(networkName)
+	if err != nil {
+		return fmt.Errorf("failed to delete network %s: %w", networkName, err)
+	}
+	return nil
+}

@@ -48,6 +48,18 @@ func RunDeletionCommand(vmCount int) error {
 	return nil
 }
 
+// DeleteNetworkCommand deletes the custom network for yak8s
+func RunDeleteNetworkCommand(networkName string) error {
+	vmManager, err := incus.NewVMManager()
+	if err != nil {
+		return fmt.Errorf("error initializing VM manager: %w", err)
+	}
+	if err := vmManager.DeleteNetwork(networkName); err != nil {
+		return fmt.Errorf("error deleting network: %w", err)
+	}
+	return nil
+}
+
 // Help command
 func RunHelpCommand() {
 	fmt.Println("Usage: yak8s <command>")
