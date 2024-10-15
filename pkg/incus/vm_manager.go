@@ -23,6 +23,21 @@ func NewVMManager() (*VMManager, error) {
 	return &VMManager{client: c}, nil
 }
 
+// CreateNetwork creates a custom network for the VMs
+func (vm *VMManager) CreateNetwork(networkName string) error {
+	networkConfig := api.NetworksPost{
+		Name: networkName,
+		Type: "bridge",
+	}
+
+	err := vm.client.CreateNetwork(networkConfig)
+	if err != nil {
+		return fmt.Errorf("failed to create network %s: %w", networkName, err)
+	}
+
+	return nil
+}
+
 // ProvisionVMs provisions the specified number of VMs
 func (vm *VMManager) ProvisionVMs(count int) error {
 	for i := 1; i <= count; i++ {

@@ -5,6 +5,18 @@ import (
 	"yak8s/pkg/incus"
 )
 
+// CreateNetworkCommand creates a custom network for yak8s
+func RunCreateNetworkCommand(networkName string) error {
+	vmManager, err := incus.NewVMManager()
+	if err != nil {
+		return fmt.Errorf("error initializing VM manager: %w", err)
+	}
+	if err := vmManager.CreateNetwork(networkName); err != nil {
+		return fmt.Errorf("error creating network: %w", err)
+	}
+	return nil
+}
+
 // RunProvisionCommand provisions the specified number of VMs
 func RunProvisionCommand(vmCount int) error {
 	// Initialize the VM Manager
