@@ -29,7 +29,7 @@ func main() {
 		fmt.Println("--------------------------------")
 
 		fmt.Println("Spinning up VMs to deploy the cluster.")
-		if err := cli.RunProvisionCommand(numVms); err != nil {
+		if err := cli.RunProvisionCommand(numVms, networkName); err != nil {
 			fmt.Printf("Error provisioning VMs: %v\n", err)
 			return
 		}

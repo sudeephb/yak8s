@@ -18,7 +18,7 @@ func RunCreateNetworkCommand(networkName string) error {
 }
 
 // RunProvisionCommand provisions the specified number of VMs
-func RunProvisionCommand(vmCount int) error {
+func RunProvisionCommand(vmCount int, networkName string) error {
 	// Initialize the VM Manager
 	vmManager, err := incus.NewVMManager()
 	if err != nil {
@@ -26,7 +26,7 @@ func RunProvisionCommand(vmCount int) error {
 	}
 
 	// Provision the VMs
-	if err := vmManager.ProvisionVMs(vmCount); err != nil {
+	if err := vmManager.ProvisionVMs(vmCount, networkName); err != nil {
 		return fmt.Errorf("error provisioning VMs: %w", err)
 	}
 

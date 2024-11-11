@@ -39,12 +39,13 @@ func (vm *VMManager) CreateNetwork(networkName string) error {
 }
 
 // ProvisionVMs provisions the specified number of VMs
-func (vm *VMManager) ProvisionVMs(count int) error {
+func (vm *VMManager) ProvisionVMs(count int, networkName string) error {
 	for i := 1; i <= count; i++ {
 		name := fmt.Sprintf("vm-%d", i) // TODO Remove the hardcoded name
 		config := VMConfig{
 			Name:       name,
 			ImageAlias: "ubuntu/jammy/cloud", // Image alias for Ubuntu 22.04 server
+			Network:    networkName,
 		}
 
 		if err := vm.createVM(config); err != nil {
@@ -71,8 +72,9 @@ func (vm *VMManager) RemoveVMs(count int) error {
 // createVM creates an individual VM based on the given configuration
 func (vm *VMManager) createVM(config VMConfig) error {
 	req := api.InstancesPost{
-		Name: config.Name,
-		Type: "virtual-machine",
+		Name:    config.Name,
+		Type:    "virtual-machine",
+		Network: config.Network,
 		Source: api.InstanceSource{
 			Type:     "image",
 			Alias:    config.ImageAlias,

@@ -4,4 +4,5 @@ package incus
 type VMConfig struct {
 	Name       string
 	ImageAlias string
+	Network    string
 }
